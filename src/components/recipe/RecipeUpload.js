@@ -69,6 +69,9 @@ const RecipeUpload = ({ user }) => {
         // 레시피 생성 API 호출
         const response = await recipeAPI.generateRecipe(image, instructions);
         console.log("Recipe generation response:", response.data);
+
+        // 응답에서 사용자 ID 확인
+        console.log("Recipe owner user ID:", response.data.userId);
         
         // 채팅 화면으로 이동하면서 생성된 레시피 데이터 전달
         navigate('/chat', { 
