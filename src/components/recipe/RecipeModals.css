@@ -1,0 +1,97 @@
+.substitute-modal {
+  width: 500px;
+  max-width: 90vw;
+}
+
+.substitute-form {
+  padding: 0 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.success-container {
+  text-align: center;
+  padding: 20px 10px;
+}
+
+.success-icon {
+  display: inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: #4CAF50;
+  border-radius: 50%;
+  color: white;
+  font-size: 30px;
+  line-height: 60px;
+  margin-bottom: 15px;
+}
+
+.success-container h4 {
+  color: #4CAF50;
+  margin-bottom: 15px;
+}
+
+.recipe-description {
+  color: #666;
+  margin: 15px 0;
+}
+
+.ingredients-list {
+  text-align: left;
+  margin: 20px 0;
+  background-color: #f9f9f9;
+  border-radius: 4px;
+  padding: 15px;
+}
+
+.ingredients-list h5 {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.ingredients-list ul {
+  padding-left: 20px;
+}
+
+.ingredients-list li {
+  margin-bottom: 5px;
+}
+
+.close-modal-button {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.close-modal-button:hover {
+  background-color: #45a049;
+}

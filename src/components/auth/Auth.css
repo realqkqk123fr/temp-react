@@ -1,0 +1,115 @@
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px);
+    padding: 20px;
+  }
+  
+  .auth-form-container {
+    width: 100%;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+  }
+  
+  .register-form {
+    max-width: 600px;
+  }
+  
+  .auth-form-container h2 {
+    margin-bottom: 24px;
+    text-align: center;
+    color: #333;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group.half {
+    flex: 1;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  .form-group textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .auth-button {
+    width: 100%;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .auth-button:hover {
+    background-color: #45a049;
+  }
+  
+  .auth-button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .auth-links {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .auth-links a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+  
+  .auth-links a:hover {
+    text-decoration: underline;
+  }
+  
+  .error-message {
+    background-color: #ffe6e6;
+    color: #d32f2f;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .success-message {
+    background-color: #e8f5e9;
+    color: #388e3c;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+  }

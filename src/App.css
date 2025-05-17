@@ -1,0 +1,79 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container {
+  flex: 1;
+  padding: 0 10px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 18px;
+  color: #666;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+/* 인증 오류 배너 */
+.auth-error-banner {
+  background-color: #ffebee;
+  color: #c62828;
+  padding: 10px;
+  text-align: center;
+  font-weight: 500;
+  border-bottom: 1px solid #ef9a9a;
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.mt-1 {
+  margin-top: 0.5rem;
+}
+
+.mt-2 {
+  margin-top: 1rem;
+}
+
+.mb-1 {
+  margin-bottom: 0.5rem;
+}
+
+.mb-2 {
+  margin-bottom: 1rem;
+}
+
+.p-1 {
+  padding: 0.5rem;
+}
+
+.p-2 {
+  padding: 1rem;
+}

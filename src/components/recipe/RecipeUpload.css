@@ -1,0 +1,164 @@
+.recipe-upload-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.recipe-upload-card {
+  width: 100%;
+  max-width: 700px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.recipe-upload-card h2 {
+  text-align: center;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.recipe-upload-description {
+  text-align: center;
+  color: #666;
+  margin-bottom: 24px;
+}
+
+.recipe-upload-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.image-upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-upload-label {
+  width: 100%;
+  cursor: pointer;
+}
+
+.image-upload-area {
+  width: 100%;
+  height: 250px;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transition: border-color 0.3s;
+}
+
+.image-upload-area:hover {
+  border-color: #4CAF50;
+}
+
+.image-upload-area.with-preview {
+  border-style: solid;
+}
+
+.upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #888;
+}
+
+.upload-icon {
+  font-size: 40px;
+  margin-bottom: 8px;
+}
+
+.upload-hint {
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.image-input {
+  display: none;
+}
+
+.image-preview {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.change-image-button {
+  margin-top: 12px;
+  padding: 8px 16px;
+  background-color: transparent;
+  border: 1px solid #4CAF50;
+  color: #4CAF50;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.change-image-button:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.instructions-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.instructions-label {
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.instructions-input {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  resize: vertical;
+}
+
+.generate-button {
+  padding: 14px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.generate-button:hover {
+  background-color: #45a049;
+}
+
+.generate-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.error-message {
+  background-color: #ffe6e6;
+  color: #d32f2f;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .recipe-upload-card {
+    padding: 20px;
+  }
+  
+  .image-upload-area {
+    height: 200px;
+  }
+}
