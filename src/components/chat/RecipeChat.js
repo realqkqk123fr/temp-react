@@ -423,19 +423,68 @@ function RecipeMessage({ message, onNewRecipe }) {
   const [error, setError] = useState(null);
   const [satisfactionSubmitted, setSatisfactionSubmitted] = useState(false);
   
+  // 레시피 ID 추출 로직 개선 - 여러 가능한 위치에서 ID 찾기
+  const getRecipeId = () => {
+    // 가능한 모든 레시피 ID 위치 확인
+    const recipeId = message.recipeId || message.recipe?.id;
+    console.log('사용할 레시피 ID:', recipeId);
+    return recipeId;
+  };
+
   // 영양 정보 가져오기
   const fetchNutrition = async () => {
-    if (!message.recipeId) return;
+    const recipeId = getRecipeId();
+    if (!recipeId) {
+      setError('레시피 ID를 찾을 수 없습니다.');
+      return;
+    }
     
     setLoading(true);
     try {
+      console.log(`영양 정보 요청 - 레시피 ID: ${recipeId}`);
       // 영양 정보 API 호출
-      const response = await recipeAPI.getNutrition(message.recipeId);
-      setNutritionData(response.data);
-      setShowNutrition(true);
+      const response = await recipeAPI.getNutrition(recipeId);
+      console.log('영양 정보 응답:', response.data);
+      
+      if (response.data) {
+        setNutritionData(response.data);
+        setShowNutrition(true);
+        setError(null);
+      } else {
+        // 응답은 성공했지만 데이터가 없는 경우
+        setError('영양 정보가 제공되지 않았습니다');
+        // 기본 영양 정보로 모달 표시
+        setNutritionData({
+          calories: 500,
+          carbohydrate: 30,
+          protein: 25,
+          fat: 15,
+          sugar: 5,
+          sodium: 400,
+          saturatedFat: 3,
+          transFat: 0,
+          cholesterol: 50
+        });
+        setShowNutrition(true);
+      }
     } catch (err) {
-      setError('영양 정보를 가져오는데 실패했습니다.');
       console.error('영양 정보 가져오기 오류:', err);
+      
+      // 오류가 발생해도 기본 영양 정보로 모달 표시
+      setNutritionData({
+        calories: 500,
+        carbohydrate: 30,
+        protein: 25,
+        fat: 15,
+        sugar: 5,
+        sodium: 400,
+        saturatedFat: 3,
+        transFat: 0,
+        cholesterol: 50
+      });
+      
+      setError('영양 정보를 가져오는데 실패했습니다. 기본값을 표시합니다.');
+      setShowNutrition(true);
     } finally {
       setLoading(false);
     }
