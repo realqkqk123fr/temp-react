@@ -755,3 +755,13 @@
     max-width: 90%;
   }
 }
+
+/* 오류 메시지 스타일 추가 */
+.message-container.error-message .message-content {
+  background-color: #ffebee;
+  border: 1px solid #ffcdd2;
+}
+
+.message-container.error-message .message-text {
+  color: #d32f2f;
+}

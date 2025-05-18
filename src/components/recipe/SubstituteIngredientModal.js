@@ -41,16 +41,59 @@ const SubstituteIngredientModal = ({ recipeName, recipeId, onClose, onSuccess })
         recipeId
       });
       
-      setNewRecipe(response.data);
+      // 응답 확인
+      const responseData = response.data;
+      
+      // 대체 불가 메시지 확인
+      const isSubstituteFailure = !responseData || 
+        (responseData.description && (
+          responseData.description.includes("적절하지 않") || 
+          responseData.description.includes("생성할 수 없"))) || 
+        (!responseData.ingredients || responseData.ingredients.length === 0) ||
+        (!responseData.instructions || responseData.instructions.length === 0);
+      
+      if (isSubstituteFailure) {
+        // 대체 재료 사용 실패로 처리
+        const errorMessage = responseData?.description || 
+                            `${originalIngredient}를 ${substituteIngredient}로 대체할 수 없습니다.`;
+        
+        setError(errorMessage);
+        
+        // 실패 정보를 포함하여 콜백 호출 (채팅에 오류 메시지 표시용)
+        if (onSuccess) {
+          onSuccess({
+            success: false,
+            message: errorMessage,
+            description: responseData?.description
+          });
+        }
+        
+        return;
+      }
+      
+      // 성공 처리
+      setNewRecipe(responseData);
       setSuccess(true);
       
       // 성공 콜백 호출
       if (onSuccess) {
-        onSuccess(response.data);
+        onSuccess({
+          ...responseData,
+          success: true
+        });
       }
     } catch (err) {
       console.error('대체 재료 요청 오류:', err);
-      setError('대체 재료 처리 중 오류가 발생했습니다. 다시 시도해주세요.');
+      const errorMessage = '대체 재료 처리 중 오류가 발생했습니다. 다시 시도해주세요.';
+      setError(errorMessage);
+      
+      // 오류 정보를 포함하여 콜백 호출
+      if (onSuccess) {
+        onSuccess({
+          success: false,
+          message: errorMessage
+        });
+      }
     } finally {
       setLoading(false);
     }

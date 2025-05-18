@@ -271,9 +271,26 @@ export const recipeAPI = {
   // 대체 재료 API
   substituteIngredient: async (substituteData) => {
     try {
-      return await api.post('/api/recipe/substitute', substituteData);
+      console.log('대체 재료 요청 데이터:', substituteData);
+      const response = await api.post('/api/recipe/substitute', substituteData);
+      console.log('대체 재료 응답:', response.data);
+      return {
+        success: true,
+        data: response.data
+      };
     } catch (error) {
-      throw error;
+      console.error('대체 재료 요청 오류:', error);
+      // 오류 응답에서 메시지 추출
+      let errorMessage = '대체 재료 요청에 실패했습니다.';
+      if (error.response && error.response.data) {
+        errorMessage = error.response.data.message || errorMessage;
+      }
+      
+      return {
+        success: false,
+        message: errorMessage,
+        error: error
+      };
     }
   }
 };

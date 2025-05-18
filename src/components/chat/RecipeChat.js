@@ -308,7 +308,15 @@ function SatisfactionModal({ recipeId, recipeName, onClose, onSubmitSuccess }) {
     // 로딩 상태 설정
     setLoading(true);
     setError(null);
-    
+
+    console.log('만족도 평가 제출 - 레시피 ID:', recipeId); // 디버깅 로그 추가
+  
+    if (!recipeId) {
+      setError('레시피 ID가 없습니다. 다시 시도해주세요.');
+      setLoading(false);
+      return;
+    }
+      
     try {
       // 만족도 데이터 생성
       const satisfactionData = {
@@ -413,7 +421,7 @@ function SatisfactionModal({ recipeId, recipeName, onClose, onSubmitSuccess }) {
 }
 
 // 레시피 메시지 컴포넌트 (대체 재료 기능 추가)
-function RecipeMessage({ message, onNewRecipe }) {
+function RecipeMessage({ message, onNewRecipe, onSubstituteResult }) {
   const [showNutrition, setShowNutrition] = useState(false);
   const [showAssistance, setShowAssistance] = useState(false);
   const [showSatisfaction, setShowSatisfaction] = useState(false);
@@ -502,7 +510,7 @@ function RecipeMessage({ message, onNewRecipe }) {
       onNewRecipe(newRecipe);
     }
   };
-  
+
   // 메시지 구조 디버깅 로그
   console.log('RecipeMessage - 메시지:', message);
   console.log('RecipeMessage - 레시피:', message.recipe);
@@ -611,7 +619,7 @@ function RecipeMessage({ message, onNewRecipe }) {
         {/* 만족도 평가 모달 */}
         {showSatisfaction && (
           <SatisfactionModal
-            recipeId={message.recipeId}
+            recipeId={getRecipeId()} // message.recipeId 대신 getRecipeId() 함수 활용
             recipeName={message.recipe.name}
             onClose={() => setShowSatisfaction(false)}
             onSubmitSuccess={handleSatisfactionSuccess}
@@ -621,10 +629,10 @@ function RecipeMessage({ message, onNewRecipe }) {
         {/* 대체 재료 모달 추가 */}
         {showSubstitute && (
           <SubstituteIngredientModal
-            recipeId={message.recipeId}
+            recipeId={getRecipeId()}
             recipeName={message.recipe.name}
             onClose={() => setShowSubstitute(false)}
-            onSuccess={handleSubstituteSuccess}
+            onSuccess={onSubstituteResult}
           />
         )}
       </div>
@@ -730,6 +738,49 @@ const RecipeChat = ({ user, isAuthenticated }) => {
     ];
     
     return recipeMessages;
+  };
+
+  // handleSubstituteResult 함수를 여기에 정의
+  const handleSubstituteResult = (result) => {
+    if (!result) {
+      console.warn('대체 재료 결과가 null입니다.');
+      return;
+    }
+    
+    console.log('대체 재료 결과 처리:', result);
+    
+    // 결과가 성공인지 명시적으로 확인
+    const isSuccess = result.success === true || 
+                      (result.ingredients && result.ingredients.length > 0 &&
+                       result.instructions && result.instructions.length > 0 &&
+                       !result.description?.includes("적절하지 않") &&
+                       !result.description?.includes("생성할 수 없"));
+    
+    if (isSuccess) {
+      // 성공적인 대체 레시피는 기존 handleNewRecipe 함수 활용
+      console.log('대체 재료 성공, 새 레시피 처리:', result);
+      handleNewRecipe(result);
+    } else {
+      // 실패 메시지 추가
+      const errorMessage = result.message || 
+                           (result.description && (
+                             result.description.includes("적절하지 않") || 
+                             result.description.includes("생성할 수 없")) ? 
+                            result.description : 
+                            '대체 재료 사용이 불가능합니다.');
+      
+      console.log('대체 재료 실패, 오류 메시지 추가:', errorMessage);
+      
+      // 메시지 배열에 오류 메시지 추가
+      setMessages(prevMessages => [
+        ...prevMessages,
+        {
+          username: 'AI 요리사',
+          message: errorMessage,
+          messageType: 'error'
+        }
+      ]);
+    }
   };
 
   // 레시피 처리 및 추가 함수
@@ -1007,13 +1058,15 @@ const RecipeChat = ({ user, isAuthenticated }) => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
+  
   // 새 레시피 처리 핸들러
   const handleNewRecipe = (newRecipe) => {
+    // 기존 코드 유지
     if (newRecipe) {
       // 새 레시피 데이터 로깅
       console.log('새 레시피 데이터:', newRecipe);
       
-      // 새 레시피의 instructions 필드 확인 및 변환
+      // 성공적인 대체 레시피 처리
       const mappedInstructions = Array.isArray(newRecipe.instructions) 
         ? newRecipe.instructions.map((inst, index) => ({
             step: inst.stepNumber || inst.step || index + 1,
@@ -1049,12 +1102,15 @@ const RecipeChat = ({ user, isAuthenticated }) => {
     console.log(`메시지 ${index} 구조:`, message);
     
     const isSystem = message.username === 'system';
+    const isError = message.messageType === 'error';  // 오류 메시지 타입 확인
     const isSentByMe = message.sentByMe || (user && message.username === user.username);
     
     return (
       <div 
         key={index} 
-        className={`message-container ${isSystem ? 'system-message' : isSentByMe ? 'sent-message' : 'received-message'}`}
+        className={`message-container ${isSystem ? 'system-message' : 
+                    isError ? 'error-message' : 
+                    isSentByMe ? 'sent-message' : 'received-message'}`}
       >
         {!isSystem && (
           <div className="message-username">{isSentByMe ? '나' : message.username}</div>
@@ -1066,6 +1122,7 @@ const RecipeChat = ({ user, isAuthenticated }) => {
             <RecipeMessage 
               message={message} 
               onNewRecipe={handleNewRecipe}
+              onSubstituteResult={handleSubstituteResult} // 여기서 함수 전달
             />
           ) : (
             message.message && <div className="message-text">{message.message}</div>
@@ -1084,7 +1141,6 @@ const RecipeChat = ({ user, isAuthenticated }) => {
       </div>
     );
   };
-
   return (
     <div className="chat-container">
       <div className="chat-header">
