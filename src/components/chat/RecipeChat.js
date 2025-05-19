@@ -651,7 +651,8 @@ const RecipeChat = ({ user, isAuthenticated }) => {
   const [connecting, setConnecting] = useState(true);
   const [connectionError, setConnectionError] = useState(false);
   const [recipeProcessed, setRecipeProcessed] = useState(false); // 레시피 처리 상태 추가
-  
+  const [sessionId, setSessionId] = useState(''); // 여기에 추가
+
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -858,6 +859,13 @@ const RecipeChat = ({ user, isAuthenticated }) => {
     // 메시지 수신 콜백 함수
     const messageCallback = (message) => {
       console.log('채팅 메시지 수신:', message);
+
+      // 세션 ID가 있으면 저장 - 이 부분 추가
+      if (message.sessionId) {
+        console.log('세션 ID 업데이트:', message.sessionId);
+        setSessionId(message.sessionId);
+      }
+
       setMessages(prevMessages => [...prevMessages, message]);
     };
 
@@ -987,8 +995,8 @@ const RecipeChat = ({ user, isAuthenticated }) => {
     
     setMessages(prevMessages => [...prevMessages, userMessage]);
     
-    // WebSocket으로 메시지 전송
-    const sent = chatService.sendMessage(currentMessage, image);
+    // WebSocket으로 메시지 전송 (세션 ID 포함)
+    const sent = chatService.sendMessage(currentMessage, image, sessionId); // 세션 ID 추가
     
     if (sent) {
       // 입력 필드 초기화

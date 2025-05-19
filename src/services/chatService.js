@@ -250,7 +250,7 @@ class ChatService {
   }
 
   // 메시지 전송
-  sendMessage(message, image = null) {
+  sendMessage(message, image = null, sessionId = null) {
     if (!this.isConnected()) {
       console.error('WebSocket이 연결되어 있지 않습니다.');
       return false;
@@ -262,6 +262,11 @@ class ChatService {
         message: message
         // 이미지는 별도 처리 필요
       };
+
+      // 세션 ID가 있으면 추가
+      if (sessionId) {
+        messagePayload.sessionId = sessionId;
+      }
 
       console.log('메시지 전송:', messagePayload);
 
